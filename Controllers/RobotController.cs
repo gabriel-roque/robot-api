@@ -1,38 +1,30 @@
-using Dapper;
+using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
-using Npgsql;
+using RobotApi.Interfaces.Repository;
 using RobotApi.Models;
 
 namespace RobotApi.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("robots")]
 public class RobotController : ControllerBase
 {
-    private readonly ILogger<RobotController> _logger;
-    private readonly string _connectionString;
+    private readonly IRobotRepository _robotRepository;
 
     public RobotController(
-        ILogger<RobotController> logger,
-        IConfiguration configuration
+        IRobotRepository robotRepository
     )
     {
-        _logger = logger;
-        _connectionString = configuration.GetConnectionString("RobotDb");
+        _robotRepository = robotRepository;
     }
 
-    [HttpGet(Name = "GetRobots")]
-    public async Task<IActionResult> Get()
+    [HttpGet("", Name = "GetRobots")]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<Robot>>> GetRobots()
     {
-        using (var db = new NpgsqlConnection(_connectionString))
-        {
-            db.Open();
-            const string sql = "SELECT * FROM robots";
-            
-            var robots = await db.QueryAsync<Robot>(sql);
-            db.Close();
-
-            return Ok(robots);
-        } 
+        IEnumerable<Robot> robots = await _robotRepository.List(0, 20);
+        return Ok(robots);
     }
 }

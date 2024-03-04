@@ -1,15 +1,20 @@
+using RobotApi.Interfaces.Repository;
+using RobotApi.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
+
+builder.Services.AddTransient<IRobotRepository, RobotRepository>();
+
+var configuration = builder.Configuration;
+builder.Services.AddNpgsqlDataSource(configuration.GetConnectionString("RobotDb")!, ServiceLifetime.Singleton);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
