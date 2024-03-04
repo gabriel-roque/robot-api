@@ -9,7 +9,7 @@ public class RobotRepository(NpgsqlConnection database): IRobotRepository
 {
     private readonly NpgsqlDataSource _database;
     
-    public async Task<Robot> Get()
+    public async Task<Robot> Get(Guid robotId)
     {
         throw new NotImplementedException();
     }

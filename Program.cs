@@ -6,6 +6,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddDatabasesConfigDI(builder.Configuration);
 builder.Services.AddRepositoriesDI();
+builder.Services.AddApplicationServicesDI();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

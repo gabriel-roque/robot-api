@@ -1,8 +1,8 @@
 using RobotApi.Models;
 
-namespace RobotApi.Interfaces.Repository;
+namespace RobotApi.Interfaces.Services;
 
-public interface IRobotRepository
+public interface IRobotService
 {
     Task<Robot> Get(Guid robotId);
     Task<Robot> Create(Robot robot);

@@ -1,6 +1,6 @@
 using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
-using RobotApi.Interfaces.Repository;
+using RobotApi.Interfaces.Services;
 using RobotApi.Models;
 
 namespace RobotApi.Controllers;
@@ -9,13 +9,13 @@ namespace RobotApi.Controllers;
 [Route("robots")]
 public class RobotController : ControllerBase
 {
-    private readonly IRobotRepository _robotRepository;
+    private readonly IRobotService _robotService;
 
     public RobotController(
-        IRobotRepository robotRepository
+        IRobotService robotService
     )
     {
-        _robotRepository = robotRepository;
+        _robotService = robotService;
     }
 
     [HttpGet("", Name = "GetRobots")]
@@ -24,7 +24,7 @@ public class RobotController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<Robot>>> GetRobots()
     {
-        IEnumerable<Robot> robots = await _robotRepository.List(0, 20);
+        IEnumerable<Robot> robots = await _robotService.List(0, 20);
         return Ok(robots);
     }
 }
