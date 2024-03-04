@@ -1,14 +1,11 @@
-using RobotApi.Interfaces.Repository;
-using RobotApi.Repositories;
+using RobotApi.AppConfig;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddTransient<IRobotRepository, RobotRepository>();
-
-var configuration = builder.Configuration;
-builder.Services.AddNpgsqlDataSource(configuration.GetConnectionString("RobotDb")!, ServiceLifetime.Singleton);
+builder.Services.AddDatabasesConfigDI(builder.Configuration);
+builder.Services.AddRepositoriesDI();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
