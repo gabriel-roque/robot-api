@@ -37,12 +37,14 @@ public class RobotController : ControllerBase
     [Consumes(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<IEnumerable<Robot>>> GetRobot([FromRoute] string id)
+    public async Task<ActionResult<Robot>> GetRobot([FromRoute] string id)
     {
         try
         {
             Guid.TryParse(id, out var robotId);
             Robot robot = await _robotService.Get(robotId);
+
+            if (robot is null) return NotFound();
 
             return Ok(robot);
         }

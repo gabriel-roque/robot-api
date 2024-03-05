@@ -1,4 +1,5 @@
 using Dapper;
+using Dapper.Contrib.Extensions;
 using Npgsql;
 using RobotApi.Interfaces.Repository;
 using RobotApi.Models;
@@ -11,9 +12,11 @@ public class RobotRepository(NpgsqlConnection database): IRobotRepository
     
     public async Task<Robot> Get(Guid robotId)
     {
-        const string sql = "SELECT * FROM robots r WHERE r.Id = @robotId";
+        var robot = await database.GetAsync<Robot>(robotId);
 
-        Robot robot = await database.QueryFirstAsync<Robot>(sql, new { robotId });
+        // Alternative RAW SQL
+        // const string sql = "SELECT * FROM robots r WHERE r.Id = @robotId";
+        // Robot robot = await database.QueryFirstAsync<Robot?>(sql, new { robotId });
 
         return robot;
     }
