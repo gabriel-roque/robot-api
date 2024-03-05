@@ -11,22 +11,31 @@ public class RobotRepository(NpgsqlConnection database): IRobotRepository
     
     public async Task<Robot> Get(Guid robotId)
     {
-        throw new NotImplementedException();
+        const string sql = "SELECT * FROM robots r WHERE r.Id = @robotId";
+
+        Robot robot = await database.QueryFirstAsync<Robot>(sql, new { robotId });
+
+        return robot;
     }
 
     public async Task<Robot> Create(Robot robot)
     {
-        throw new NotImplementedException();
+        robot.Id = Guid.NewGuid();
+        const string sql = "INSERT INTO robots (id, name) VALUES (@id, @name)";
+        
+        var result = await database.ExecuteAsync(sql, new { id = robot.Id, name = robot.Name });
+        
+        if(result >= 1)
+            return await Get(robot.Id);
+        
+        return null;
     }
 
     public async Task<IEnumerable<Robot>> List(int skip, int take = 10)
     {
-        database.Open();
-        
         const string sql = "SELECT * FROM robots LIMIT @take OFFSET @skip";
         
         IEnumerable<Robot> robots = await database.QueryAsync<Robot>(sql, new { skip, take });
-        database.Close();
 
         return robots;
     }

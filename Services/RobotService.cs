@@ -12,16 +12,10 @@ public class RobotService: IRobotService
     {
         _robotRepository = robotRepository;
     }
-    
-    public async Task<Robot> Get(Guid robotId)
-    {
-        throw new NotImplementedException();
-    }
 
-    public async Task<Robot> Create(Robot robot)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<Robot> Get(Guid robotId) => await _robotRepository.Get(robotId);
+
+    public async Task<Robot> Create(Robot robot) => await _robotRepository.Create(robot);
 
     public async Task<IEnumerable<Robot>> List(int skip, int take = 10) => await _robotRepository.List(skip, take);
 

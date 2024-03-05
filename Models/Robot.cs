@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RobotApi.Models;
@@ -5,7 +6,7 @@ namespace RobotApi.Models;
 [Table("robots")]
 public class Robot
 {
-    [System.ComponentModel.DataAnnotations.Key]
+    [Key]
     [Column("id")]
     public Guid Id { get; set; }
     
