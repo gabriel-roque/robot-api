@@ -14,7 +14,7 @@ builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
 
         return new ObjectResult(problemDetails)
         {
-            StatusCode = 422
+            StatusCode = StatusCodes.Status422UnprocessableEntity
         };
     });
 
