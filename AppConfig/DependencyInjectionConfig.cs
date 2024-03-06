@@ -20,6 +20,7 @@ public static class DependencyInjectionConfig
     public static IServiceCollection AddApplicationServicesDI(this IServiceCollection services)
     {
         services.AddTransient<IRobotService, RobotService>();
+        services.AddTransient<ITokenService, TokenService>();
         
         return services;
     }
