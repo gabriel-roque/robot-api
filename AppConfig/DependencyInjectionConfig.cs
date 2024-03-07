@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using RobotApi.Data;
 using RobotApi.Interfaces.Repository;
 using RobotApi.Interfaces.Services;
 using RobotApi.Repositories;
@@ -12,14 +14,20 @@ public static class DependencyInjectionConfig
         IConfiguration configuration
     )
     {
-        services.AddNpgsqlDataSource(configuration.GetConnectionString("RobotDb")!, ServiceLifetime.Singleton);
+        services.AddDbContext<AppDbContext>(options =>
+        {
+            options.UseSqlServer(configuration.GetConnectionString("RobotDB") ??
+                throw new InvalidOperationException("Connection String is not found"));
+        });
+        
+        // services.AddNpgsqlDataSource(configuration.GetConnectionString("RobotDb")!, ServiceLifetime.Singleton);
 
         return services;
     }
 
     public static IServiceCollection AddApplicationServicesDI(this IServiceCollection services)
     {
-        services.AddTransient<IRobotService, RobotService>();
+        // services.AddTransient<IRobotService, RobotService>();
         services.AddTransient<ITokenService, TokenService>();
         
         return services;
@@ -27,7 +35,7 @@ public static class DependencyInjectionConfig
 
     public static IServiceCollection AddRepositoriesDI(this IServiceCollection services)
     {
-        services.AddTransient<IRobotRepository, RobotRepository>();
+        // services.AddTransient<IRobotRepository, RobotRepository>();
 
         return services;
     }
