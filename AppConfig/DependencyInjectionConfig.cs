@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RobotApi.Data;
-using RobotApi.Interfaces.Repository;
+using RobotApi.Interfaces.Repositories;
 using RobotApi.Interfaces.Services;
 using RobotApi.Repositories;
 using RobotApi.Services;
@@ -29,6 +29,7 @@ public static class DependencyInjectionConfig
     {
         // services.AddTransient<IRobotService, RobotService>();
         services.AddTransient<ITokenService, TokenService>();
+        services.AddScoped<IUserAccountService, UserAccountService>();
         
         return services;
     }

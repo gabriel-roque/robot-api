@@ -1,6 +1,6 @@
 using RobotApi.Models;
 
-namespace RobotApi.Interfaces.Repository;
+namespace RobotApi.Interfaces.Repositories;
 
 public interface IRobotRepository
 {

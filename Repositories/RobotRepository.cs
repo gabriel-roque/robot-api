@@ -1,7 +1,7 @@
 using Dapper;
 using Dapper.Contrib.Extensions;
 using Npgsql;
-using RobotApi.Interfaces.Repository;
+using RobotApi.Interfaces.Repositories;
 using RobotApi.Models;
 
 namespace RobotApi.Repositories;

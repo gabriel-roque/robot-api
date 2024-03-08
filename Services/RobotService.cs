@@ -1,4 +1,4 @@
-using RobotApi.Interfaces.Repository;
+using RobotApi.Interfaces.Repositories;
 using RobotApi.Interfaces.Services;
 using RobotApi.Models;
 
