@@ -1,44 +1,36 @@
-using Dapper;
-using Dapper.Contrib.Extensions;
-using Npgsql;
+using Microsoft.EntityFrameworkCore;
+using RobotApi.AppConfig;
 using RobotApi.Interfaces.Repositories;
 using RobotApi.Models;
 
 namespace RobotApi.Repositories;
 
-public class RobotRepository(NpgsqlConnection database): IRobotRepository
+public class RobotRepository(
+    AppDbContext database
+    ): IRobotRepository
 {
-    private readonly NpgsqlDataSource _database;
     
     public async Task<Robot> Get(Guid robotId)
     {
-        var robot = await database.GetAsync<Robot>(robotId);
-
-        // Alternative RAW SQL
-        // const string sql = "SELECT * FROM robots r WHERE r.Id = @robotId";
-        // Robot robot = await database.QueryFirstAsync<Robot?>(sql, new { robotId });
+        var robot = await database.Robot
+                .AsNoTracking()
+                .FirstOrDefaultAsync(robot => robot.Id == robotId);
 
         return robot;
     }
 
     public async Task<Robot> Create(Robot robot)
     {
-        robot.Id = Guid.NewGuid();
-        const string sql = "INSERT INTO robots (id, name) VALUES (@id, @name)";
+        database.Robot.Add(robot);
+
+        await database.SaveChangesAsync();
         
-        var result = await database.ExecuteAsync(sql, new { id = robot.Id, name = robot.Name });
-        
-        if(result >= 1)
-            return await Get(robot.Id);
-        
-        return null;
+        return robot;
     }
 
     public async Task<IEnumerable<Robot>> List(int skip, int take = 10)
     {
-        const string sql = "SELECT * FROM robots LIMIT @take OFFSET @skip";
-        
-        IEnumerable<Robot> robots = await database.QueryAsync<Robot>(sql, new { skip, take });
+        var robots = await database.Robot.Skip(skip).Take(take).AsNoTracking().ToListAsync();
 
         return robots;
     }

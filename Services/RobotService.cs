@@ -4,19 +4,15 @@ using RobotApi.Models;
 
 namespace RobotApi.Services;
 
-public class RobotService: IRobotService
+public class RobotService (
+        IRobotRepository robotRepository
+    )
+    : IRobotService
 {
-    private readonly IRobotRepository _robotRepository;
+    public async Task<Robot> Get(Guid robotId) => await robotRepository.Get(robotId);
 
-    public RobotService(IRobotRepository robotRepository)
-    {
-        _robotRepository = robotRepository;
-    }
+    public async Task<Robot> Create(Robot robot) => await robotRepository.Create(robot);
 
-    public async Task<Robot> Get(Guid robotId) => await _robotRepository.Get(robotId);
-
-    public async Task<Robot> Create(Robot robot) => await _robotRepository.Create(robot);
-
-    public async Task<IEnumerable<Robot>> List(int skip, int take = 10) => await _robotRepository.List(skip, take);
+    public async Task<IEnumerable<Robot>> List(int skip, int take = 10) => await robotRepository.List(skip, take);
 
 }
