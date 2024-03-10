@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using RobotApi.Data;
 using RobotApi.Interfaces.Repositories;
 using RobotApi.Interfaces.Services;
-using RobotApi.Repositories;
 using RobotApi.Services;
 
 namespace RobotApi.AppConfig;

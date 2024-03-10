@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RobotApi.AppConfig;
-using RobotApi.Data;
 using RobotApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 

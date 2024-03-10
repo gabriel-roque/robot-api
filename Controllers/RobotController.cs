@@ -1,5 +1,7 @@
 using System.Net.Mime;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RobotApi.Dtos;
 using RobotApi.Interfaces.Services;
@@ -9,8 +11,26 @@ namespace RobotApi.Controllers;
 
 [ApiController]
 [Route("robots")]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class RobotController : ControllerBase
 {
+
+    [HttpGet]
+    [Route("/test")]
+    public async Task<IActionResult> Test()
+    {
+        return Ok();
+    }
+    
+    [HttpGet]
+    [Route("/admin-user")]
+    [Authorize(Roles = "Admin, User")]
+    public async Task<IActionResult> AdminAndUser()
+    {
+        
+        return Ok();
+    }
+    
     // private readonly IRobotService _robotService;
     // private readonly IMapper _mapper;
     //

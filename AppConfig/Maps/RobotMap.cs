@@ -1,6 +1,17 @@
+using Microsoft.EntityFrameworkCore;
+using RobotApi.Models;
+
 namespace RobotApi.AppConfig.Maps;
 
-public class RobotMap
+internal static class RobotMap
 {
-    
+    public static void Map(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Map<Robot>();
+        modelBuilder.Entity<Robot>(builder =>
+        {
+            builder.Property(p => p.Name).DefaultString(10, true);
+            builder.Property(p => p.Name).DefaultString(3, true, TextType.Numbers);
+        });
+    }
 }

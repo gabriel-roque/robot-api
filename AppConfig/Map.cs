@@ -1,6 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+using RobotApi.AppConfig.Maps;
+
 namespace RobotApi.AppConfig;
 
-public class Map
+public static class Map
 {
-    
+    public static void Setup(ModelBuilder builder)
+    {
+        RobotMap.Map(builder);
+    }
 }
