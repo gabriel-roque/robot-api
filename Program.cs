@@ -25,9 +25,7 @@ builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
         };
     });
 
-builder.Services.AddDatabasesConfigDI(builder.Configuration);
-builder.Services.AddRepositoriesDI();
-builder.Services.AddApplicationServicesDI();
+
 
 // Identity & JWT Auth
 builder.Services.AddIdentity<User, IdentityRole>()
@@ -66,6 +64,11 @@ builder.Services.AddSwaggerGen(options =>
 
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
+
+// Databse && Repository && Services
+builder.Services.AddDatabasesConfigDI(builder.Configuration);
+builder.Services.AddRepositoriesDI();
+builder.Services.AddApplicationServicesDI();
 
 // Mapper
 var mapperConfig = new MapperConfiguration(mc =>

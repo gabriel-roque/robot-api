@@ -1,8 +1,8 @@
-using RobotApi.Models;
+using RobotApi.Dtos;
 
 namespace RobotApi.Interfaces.Services;
 
 public interface ITokenService
 {
-    string Generate (User user);
+    string Generate (UserSession user);
 }

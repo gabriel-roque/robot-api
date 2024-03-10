@@ -2,51 +2,39 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using RobotApi.Dtos;
 using RobotApi.Interfaces.Services;
-using RobotApi.Models;
 
 namespace RobotApi.Services;
 
-public class TokenService : ITokenService
-{
-    private readonly IConfiguration _configuration;
-
-    public TokenService(
+public class TokenService (
         IConfiguration configuration
-    )
+    ) : ITokenService
+{
+    public string Generate(UserSession user)
     {
-        _configuration = configuration;
+        var KEY = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!));
+        var credentials = new SigningCredentials(KEY, SecurityAlgorithms.HmacSha256);
+
+        var token = new JwtSecurityToken(
+            issuer: configuration["Jwt:Issuer"],
+            audience: configuration["Jwt:Audience"],
+            claims: GenerateClaims(user),
+            expires: DateTime.Now.AddDays(1),
+            signingCredentials: credentials
+        );
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
-    
-    public string Generate(User user)
+
+    private static Claim[] GenerateClaims(UserSession user)
     {
-        var handler = new JwtSecurityTokenHandler();
-        
-        var KEY = Encoding.ASCII.GetBytes(_configuration.GetValue<string>("Secrets:JWT_SECRET"));
-
-        var credentials = new SigningCredentials(
-            new SymmetricSecurityKey(KEY), 
-            SecurityAlgorithms.HmacSha256Signature);
-
-        var tokenDescripter = new SecurityTokenDescriptor()
+        return new Claim[]
         {
-            Subject = GenerateClaims(user),
-            SigningCredentials = credentials,
-            Expires = DateTime.UtcNow.AddHours(2)
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
+            new Claim(ClaimTypes.Name, user.Name),
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Role, user.Role)
         };
-
-        var token = handler.CreateToken(tokenDescripter);
-
-        return handler.WriteToken(token);
-    }
-
-    private static ClaimsIdentity GenerateClaims(User user)
-    {
-        var ci = new ClaimsIdentity();
-        
-        ci.AddClaim(new Claim(ClaimTypes.Email, user.Email));
-        ci.AddClaim(new Claim("user_id", user.Id.ToString()));
-
-        return ci;
     }
 }

@@ -17,18 +17,16 @@ public static class DependencyInjectionConfig
             options.UseSqlServer(configuration.GetConnectionString("RobotDB") ??
                 throw new InvalidOperationException("Connection String is not found"));
         });
-        
-        // services.AddNpgsqlDataSource(configuration.GetConnectionString("RobotDb")!, ServiceLifetime.Singleton);
 
         return services;
     }
 
     public static IServiceCollection AddApplicationServicesDI(this IServiceCollection services)
     {
-        // services.AddTransient<IRobotService, RobotService>();
         services.AddTransient<ITokenService, TokenService>();
-        services.AddScoped<IUserAccountService, UserAccountService>();
-        
+        services.AddTransient<IUserAccountService, UserAccountService>();
+        // services.AddTransient<IRobotService, RobotService>();
+
         return services;
     }
 
