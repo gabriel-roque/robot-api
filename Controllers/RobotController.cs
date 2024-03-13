@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using RobotApi.Dtos;
 using RobotApi.Enums;
 using RobotApi.Interfaces.Services;
+using RobotApi.Middlewares;
 using RobotApi.Models;
 
 namespace RobotApi.Controllers;
@@ -31,6 +32,7 @@ public class RobotController (
     }
     
     [HttpGet("{id}")]
+    [ExampleMiddleware]
     [Authorize(Roles = $"{Roles.USER}, {Roles.ADMIN}")]
     [Consumes(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status200OK)]
