@@ -1,1 +1,2 @@
-Password Default: Admin@123
+user: admin@email.com
+pass: Admin@123
