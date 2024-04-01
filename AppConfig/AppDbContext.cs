@@ -23,33 +23,23 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<User>(op
         }
     }
 
-    public override int SaveChanges(bool acceptAllChangesOnSuccess)
-    {
-        OnBeforeSaving();
-        return base.SaveChanges(acceptAllChangesOnSuccess);
-    }
-
-    public override int SaveChanges()
-    {
-        OnBeforeSaving();
-        return base.SaveChanges();
-    }
-
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {
         OnBeforeSaving();
         return base.SaveChangesAsync(cancellationToken);
     }
 
-    public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
-        CancellationToken cancellationToken = new())
-    {
-        OnBeforeSaving();
-        return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-    }
-
     private void OnBeforeSaving()
     {
+        foreach (var entry in ChangeTracker.Entries<Robot>())
+            switch (entry.State)
+            {
+                case EntityState.Modified:
+                    entry.Entity.Version =  entry.Entity.Version == 0 ? 1 : entry.Entity.Version + 1;
+                    break;
+            }
+        
+        
         foreach (var entry in ChangeTracker.Entries<Entity>())
             switch (entry.State)
             {

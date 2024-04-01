@@ -44,9 +44,6 @@ public class RobotRepository(
 
         robotFound.Name = robot.Name;
 
-        // TODO: Move to interceptor
-        robotFound.Version = robotFound.Version == 0 ? 1 : robotFound.Version + 1;
-        
         database.Update(robotFound);
         
         await database.SaveChangesAsync();

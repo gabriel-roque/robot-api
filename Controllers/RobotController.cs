@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RobotApi.AppConfig.Errors;
 using RobotApi.Dtos;
 using RobotApi.Enums;
 using RobotApi.Interfaces.Services;
@@ -80,7 +81,7 @@ public class RobotController (
     [Authorize(Roles = $"{Roles.ADMIN}")]
     [Consumes(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     public async Task<ActionResult<Robot>> UpdateRobot([FromBody] RobotUpdateDto body, string id)
     {
@@ -92,9 +93,10 @@ public class RobotController (
             await robotService.Update(robot);
             return new ObjectResult(null) { StatusCode = StatusCodes.Status204NoContent };
         }
-        catch (Exception e)
+        catch (NotFoundException e)
         {
-            return BadRequest(e);
-        }
+            return new ObjectResult(new { message = e.Message }) 
+            { StatusCode = StatusCodes.Status404NotFound};
+        } 
     }
 }
