@@ -25,8 +25,6 @@ builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
         };
     });
 
-
-
 // Identity & JWT Auth
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()

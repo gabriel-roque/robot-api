@@ -10,8 +10,10 @@ internal static class RobotMap
         modelBuilder.Map<Robot>();
         modelBuilder.Entity<Robot>(builder =>
         {
-            builder.Property(p => p.Name).DefaultString(10, true);
-            builder.Property(p => p.Name).DefaultString(3, true, TextType.Numbers);
+            builder.Property(p => p.Name).DefaultString(20, true);
+            builder.Property(p => p.Level);
+            builder.Property(p => p.Version)
+                .IsConcurrencyToken();
         });
     }
 }

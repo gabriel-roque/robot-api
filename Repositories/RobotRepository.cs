@@ -1,5 +1,8 @@
+using System.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using RobotApi.AppConfig;
+using RobotApi.AppConfig.Errors;
 using RobotApi.Interfaces.Repositories;
 using RobotApi.Models;
 
@@ -26,6 +29,29 @@ public class RobotRepository(
         await database.SaveChangesAsync();
         
         return robot;
+    }
+
+    public async Task<Robot> Update(Robot robot)
+    {
+        var robotFound =
+            await database.Robot
+                .FirstOrDefaultAsync((r) =>
+                    r.Id == robot.Id &&
+                    r.Version == robot.Version);
+
+        if (robotFound is null)
+            throw new NotFoundException("Robot not found with version");
+
+        robotFound.Name = robot.Name;
+
+        // TODO: Move to interceptor
+        robotFound.Version = robotFound.Version == 0 ? 1 : robotFound.Version + 1;
+        
+        database.Update(robotFound);
+        
+        await database.SaveChangesAsync();
+
+        return robotFound;
     }
 
     public async Task<IEnumerable<Robot>> List(int skip, int take = 10)

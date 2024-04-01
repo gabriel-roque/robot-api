@@ -8,7 +8,7 @@ public class MappingProfile: Profile
 {
     public MappingProfile()
     {
-        CreateMap<Robot, RobotDto>();
-        CreateMap<RobotDto, Robot>();
+        CreateMap<RobotCreateDto, Robot>();
+        CreateMap<RobotUpdateDto, Robot>();
     }
 }

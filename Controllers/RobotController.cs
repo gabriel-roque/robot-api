@@ -61,7 +61,7 @@ public class RobotController (
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-    public async Task<ActionResult<Robot>> CreateRobot([FromBody] RobotDto body)
+    public async Task<ActionResult<Robot>> CreateRobot([FromBody] RobotCreateDto body)
     {
         Robot robot = mapper.Map<Robot>(body);
     
@@ -69,6 +69,28 @@ public class RobotController (
         {
             await robotService.Create(robot);
             return new ObjectResult(robot) { StatusCode = StatusCodes.Status201Created };
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
+        }
+    }
+    
+    [HttpPut("{id}")]
+    [Authorize(Roles = $"{Roles.ADMIN}")]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+    public async Task<ActionResult<Robot>> UpdateRobot([FromBody] RobotUpdateDto body, string id)
+    {
+        Robot robot = mapper.Map<Robot>(body);
+        robot.Id = Guid.Parse(id);
+    
+        try
+        {
+            await robotService.Update(robot);
+            return new ObjectResult(null) { StatusCode = StatusCodes.Status204NoContent };
         }
         catch (Exception e)
         {
