@@ -1,2 +1,4 @@
 user: admin@email.com
 pass: Admin@123
+
+dotnet ef database update -c AppDbContext

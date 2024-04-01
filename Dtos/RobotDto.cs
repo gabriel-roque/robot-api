@@ -13,7 +13,4 @@ public class RobotCreateDto
 }
 public class RobotUpdateDto : RobotCreateDto
 {
-    [JsonPropertyName("version")]
-    [Required]
-    public Int64 Version { get; set; }
 }

@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RobotApi.AppConfig.Errors;
 using RobotApi.Dtos;
 using RobotApi.Enums;
@@ -97,6 +98,11 @@ public class RobotController (
         {
             return new ObjectResult(new { message = e.Message }) 
             { StatusCode = StatusCodes.Status404NotFound};
+        } 
+        catch (DbUpdateConcurrencyException e)
+        {
+            return new ObjectResult(new { message = "Concurrency Exception - Try again" }) 
+            { StatusCode = StatusCodes.Status400BadRequest};
         } 
     }
 }

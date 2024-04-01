@@ -36,8 +36,7 @@ public class RobotRepository(
         var robotFound =
             await database.Robot
                 .FirstOrDefaultAsync((r) =>
-                    r.Id == robot.Id &&
-                    r.Version == robot.Version);
+                    r.Id == robot.Id);
 
         if (robotFound is null)
             throw new NotFoundException("Robot not found with version");

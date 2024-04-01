@@ -7,8 +7,8 @@ services:
     environment:
       - ConnectionStrings__RobotDB=Server=sqldata,1433;Database=robot;User Id=sa;Password=Pass@word;TrustServerCertificate=true;
       - Jwt__Key=YcxjOMewdFfeZFQm5iGAYxTjR23Z93rLbyZucty3
-      - Jwt_Issuer=https://robot-api
-      - Jwt_Audience=https://robot-api
+      - Jwt__Issuer=https://robot-api
+      - Jwt__Audience=https://robot-api
     depends_on:
       - sqldata
     networks:
