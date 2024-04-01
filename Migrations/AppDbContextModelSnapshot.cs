@@ -180,13 +180,17 @@ namespace RobotApi.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(3)
-                        .HasColumnType("nvarchar(3)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTimeOffset>("UpdateDate")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetimeoffset")
                         .HasDefaultValueSql("getutcdate()");
+
+                    b.Property<long>("Version")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
